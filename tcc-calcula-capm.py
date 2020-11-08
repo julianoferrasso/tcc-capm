@@ -127,10 +127,6 @@ def calcula_capm():
     
         print ("Retorno Esperado (CAPM) de",cod_acao,"=", Re*100)        
         
-        plt.scatter(vet_ret_ibov, vet_ret_acao)
-    
-        plt.show()
-        
 
     except (Exception, psycopg2.Error) as error :
         print ("Erro de conexao com o banco de dados PostgreSQL", error)
