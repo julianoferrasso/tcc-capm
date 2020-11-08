@@ -10,7 +10,9 @@ import psycopg2
 import numpy as np
 from matplotlib import pyplot as plt
 
-def calcula_capm():
+'PETR4','2019-01-01','2019-31-01',1
+def calcula_capm(arg_acao,arg_dt_incial,arg_dt_final,arg_grafico):
+    
     print ("-- Iniciando conexão com o banco de dados PostgresSQL")
     try:
         connection = psycopg2.connect(user = "tcc",
@@ -30,13 +32,16 @@ def calcula_capm():
         VAR = 0
         
         #informa Acao a ser analisada
-        cod_acao = 'SUZB3'
+        cod_acao = arg_acao
         
         #informa dia inicial do periodo analisado
-        dia_inicio = '2019-01-01'
+        dia_inicio = arg_dt_incial
         
         #informa dia final do periodo analisado
-        dia_fim = '2019-07-31'
+        dia_fim = arg_dt_final
+        
+        #informa tipo de grafico
+        op_grafico = arg_grafico
         
         #busca no BD quantidade de  pregoes no periodo informado:
         cursor.execute("SELECT count(preco) FROM preco WHERE cod_acao like '%IBOV%' and dia >= '"+dia_inicio+"' and dia <= '"+dia_fim+"';")
@@ -115,70 +120,71 @@ def calcula_capm():
             media_ret_acao += x
         media_ret_acao = media_ret_acao/(vet_ret_acao.__len__())
         
-        print('retorno med acao:',media_ret_acao)
-        print('retorno med ibov:',media_ret_ibov)
+        print('\nretorno med acao:',media_ret_acao)
+        print('\nretorno med ibov:',media_ret_ibov)
         
         #calculo da Covariancia entre a acao e o ibov
         for x in range (len_ret_acao):
             COV += ((vet_ret_acao[x]-media_ret_acao) * (vet_ret_ibov[x]-media_ret_ibov))
         COV = COV/(len_ret_acao) 
         
-        print ('covariancia=',COV)
+        print ('\ncovariancia=',COV)
         
         #calculo da Variancia do ibov
         for x in range (len_ret_ibov):
             VAR += (vet_ret_ibov[x]-media_ret_ibov)**2
         VAR = VAR/(len_ret_ibov-1)
         
-        print ('variancia=', VAR)
+        print ('\nvariancia=', VAR)
         
         #calculo do Beta
         Beta = COV/VAR
         Beta = float(Beta)
         
-        print ("beta",cod_acao,'Periodo',dia_inicio,'a',dia_fim, Beta)
+        print ("\nBeta",cod_acao,'Periodo',dia_inicio,'a',dia_fim,'=', Beta)
         
-    
+        #obtem retorno ibovespa no periodo para CAPM
+        tam_vet = vet_ibov.__len__()
+        retorno_ibov_per = ((vet_ibov[0]/vet_ibov[tam_vet-1])-1)
+        print ('\nRetorno (%) do IBOV no periodo =',retorno_ibov_per)
+        
         #inicializa var Re -- Retorno esperado
         Re = 0
-        #inicializa var Rf -- Retorno livre de Risco (taxa SELIC)
+        #inicializa var Rf -- Retorno livre de Risco (taxa SELIC 4%)
         Rf = (4/100)
-        #inicializa var Rm -- Retorno médio do mercado (Bovespa)
-        Rm = (25/100)
+        #inicializa var Rm -- Retorno do IBOVESPA no periodo informado
+        Rm = float(retorno_ibov_per)
     
         #calculo do CAPM
         Re = Rf+(Beta*(Rm-Rf))
     
-        print ("Retorno Esperado (CAPM) de",cod_acao,"=", Re*100)   
+        print ("\nRetorno Esperado (CAPM) de",cod_acao,"=", Re*100,'\n\n')   
          
+        #gera grafico retorno da acao x ibov
+        if op_grafico == 1:
+            plt.plot((vet_dia_ret),vet_ret_ibov)
+            plt.plot((vet_dia_ret),vet_ret_acao)
+            plt.title('Retrono '+cod_acao+' x IBOV peridodo'+dia_inicio+' a '+dia_fim)
+            plt.xlabel ('Periodo')
+            plt.ylabel ('Retorno (%)')
+            plt.legend(['IBOV', cod_acao], loc=2)
+            plt.show()
         
-        #Gera grafico comparativo retorno acao x ibov
-        plt.plot((vet_dia_ret),vet_ret_ibov)
-        plt.plot((vet_dia_ret),vet_ret_acao)
-        plt.title('Retrono '+cod_acao+' x IBOV peridodo'+dia_inicio+' a '+dia_fim)
-        plt.xlabel ('Periodo')
-        plt.ylabel ('Retorno (%)')
-        plt.legend(['IBOV', cod_acao], loc=2)
-        plt.show()
 
-        
-        
-        """
         #Geracao do grafico do Beta
-        x = np.array(vet_ret_acao)
-        y = np.array(vet_ret_ibov)
-        x = (np.float_(x))
-        y = (np.float_(y))        
+        if op_grafico == 2:
+            x = np.array(vet_ret_acao)
+            y = np.array(vet_ret_ibov)
+            x = (np.float_(x))
+            y = (np.float_(y))        
         
-        plt.plot(x,y, 'o')
+            plt.plot(x,y, 'o')
         
-        m, b = np.polyfit(x, y, 1)
+            m, b = np.polyfit(x, y, 1)
         
-        plt.plot(x, m*x + b)
-        plt.title('Beta '+cod_acao+' periodo '+dia_inicio+' a '+dia_fim)
-        """
-       
-  
+            plt.plot(x, m*x + b)
+            plt.title('Beta '+cod_acao+' periodo '+dia_inicio+' a '+dia_fim)       
+         
 
     except (Exception, psycopg2.Error) as error :
         print ("Erro de conexao com o banco de dados PostgreSQL", error)
@@ -192,10 +198,12 @@ def calcula_capm():
 
 start = time.time()
 
-
-calcula_capm()
-
-
+#Argumentos da funcao
+    #1 codigo acao, 
+    #2 periodo_inicial, 
+    #3 periodo_final, 
+    #4 tipo de garfico (1 - Acao X Ibov, 2 - Beta acao)
+calcula_capm('PETR4','2019-01-01','2019-12-31',2)
 
 end = time.time()
 
