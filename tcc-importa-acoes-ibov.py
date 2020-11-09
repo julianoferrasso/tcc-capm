@@ -39,7 +39,7 @@ def grava_ibov():
                                       password = "tcc",
                                       host = "192.168.0.35",
                                       port = "5432",
-                                      database = "tcc")
+                                      database = "bovespa")
 
         cursor = connection.cursor()
 
@@ -97,7 +97,7 @@ def grava_acoes():
                                       password = "tcc",
                                       host = "192.168.0.35",
                                       port = "5432",
-                                      database = "tcc")
+                                      database = "bovespa")
 
         cursor = connection.cursor()
 
@@ -114,7 +114,7 @@ def grava_acoes():
         
         contAcao = 0
         contLinhaAcao = 0
-        
+       
         #loop que percorre todo o arquivo que em sua ultima linha inicia com 99 
         while controle!='99':
             #le uma linha a cada interacao do loop
@@ -139,7 +139,7 @@ def grava_acoes():
                     cursor.execute("INSERT INTO acao (cod, nome) VALUES(%s, %s)", (Acao, Nome))
                     connection.commit()
                     contAcao +=1
-
+                    
         arq.close()
 
         print ("-- Importacao de acoes terminada: ")
@@ -163,10 +163,11 @@ def grava_acoes():
             Acao = st[12:19]
             #condicao para gravar somente acoes de LOTE PADRAO excluindo o ETF IBOV11
             if TA == '02' and Acao != 'IBOV11 ':                
-                PrMed = float(st[102:106]+'.'+st[106:108])
+                #PrMed = float(st[102:106]+'.'+st[106:108])
+                PrFechamento = float(st[110:119]+'.'+st[119:121])
                 Dia = st[2:10]
-                print(Acao,Dia,PrMed)
-                cursor.execute("INSERT INTO preco (cod_acao, dia, preco) VALUES(%s, %s, %s)", (Acao, Dia, PrMed))
+                print(Acao,Dia,PrFechamento)
+                cursor.execute("INSERT INTO preco (cod_acao, dia, preco) VALUES(%s, %s, %s)", (Acao, Dia, PrFechamento))
                 connection.commit()
                 contPreco +=1
         arq.close()
