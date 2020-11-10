@@ -142,12 +142,12 @@ def calcula_capm(arg_acao,arg_dt_incial,arg_dt_final,arg_grafico):
         
         print ("\nBeta",cod_acao,'Periodo',dia_inicio,'a',dia_fim,'=', '{:05.4f}'.format(Beta))
         
-        #obtem retorno ibovespa no periodo para CAPM
+        #obtem retorno do ibovespa no periodo para CAPM
         tam_vet = vet_ibov.__len__()
         retorno_ibov_per = ((vet_ibov[0]/vet_ibov[tam_vet-1])-1)
         
         
-        #obtem retorno ibovespa no periodo para CAPM
+        #obtem retorno da acao no periodo para CAPM
         tam_vet = vet_acao.__len__()
         retorno_acao_per = ((vet_acao[0]/vet_acao[tam_vet-1])-1)
         
