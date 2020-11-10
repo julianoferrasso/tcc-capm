@@ -2,7 +2,7 @@
 
 Trabalho de Conclusão de Curso de Ciência da Computação - UNICARIOCA
 
-OBJETIVO PRINCIPAL
+<b>OBJETIVO PRINCIPAL</b>
 
 Este trabalho visa a sistematização do modelo matemátcio chamado CAPM que é utilizado para estimativa do retorno de um investimento em ações.
 Para tanto foi utilizado o arquivo da série histórica da BOVESPA e utlizada a liguagem Python para a elabotração do algoritmo.
