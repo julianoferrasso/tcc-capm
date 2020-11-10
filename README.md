@@ -1,8 +1,8 @@
-# TCC - Uma Análise Estatística da Bolsa de Valores
+### TCC - Uma Análise Estatística da Bolsa de Valores
 
-### Trabalho de Conclusão de Curso de Ciência da Computação - UNICARIOCA
+##### Trabalho de Conclusão de Curso de Ciência da Computação - UNICARIOCA
 
-## OBJETIVO PRINCIPAL
+#### OBJETIVO PRINCIPAL
 
 Este trabalho visa a sistematização do modelo matemátcio chamado CAPM que é utilizado para estimativa do retorno de um investimento em ações.
 Para tanto foi utilizado o arquivo da série histórica da BOVESPA e utlizada a liguagem Python para a elabotração do algoritmo.
