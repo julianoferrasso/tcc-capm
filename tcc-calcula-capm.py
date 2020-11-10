@@ -153,7 +153,7 @@ def calcula_capm(arg_acao,arg_dt_incial,arg_dt_final,arg_grafico):
         
         #inicializa var Re -- Retorno esperado
         Re = 0
-        #inicializa var Rf -- Retorno livre de Risco (taxa SELIC 4%)
+        #inicializa var Rf -- Retorno livre de Risco (taxa SELIC 4,25%)
         Rf = (4.25/100)
         #inicializa var Rm -- Retorno do IBOVESPA no periodo informado
         Rm = float(retorno_ibov_per)
