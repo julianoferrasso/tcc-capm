@@ -19,6 +19,7 @@ Por questão do arquivo da serie histórica anual das ações listadas na BOVESP
  
 Já os índices históricos do IBOVESPA, no arquivo aqui disponibilizado, foi uma trabalho manual de copiar em tela os dados informados para um arquivo .TXT pois não foi encontrado no site da BOVESPA um opção de download de um arquivo contendo tais informações. O link http://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-amplos/indice-ibovespa-ibovespa-estatisticas-historicas.htm disponibiliza a visualização em tela dos índices Ibovespa.
 
-Para facilitar a utilização do algoritmo, está disponibilizado o arquivo de replicação do banco de dados **(bovespa-tcc.sql)** bastando sua importação num banco de dados PostgreSQL e a configuração das credenciais e endereço do banco de dados no algoritmo principal **(tcc-calcula-capm.py)** no campo destinado a esses dados.
+Para facilitar a utilização do algoritmo, está disponibilizado o arquivo de replicação do banco de dados **(bovespa-tcc.sql)** bastando sua importação num banco de dados PostgreSQL e a configuração das credenciais e endereço do banco de dados no algoritmo principal **(tcc-calcula-capm.py)** no campo destinado a esses dados. 
+<p>
 *connection = psycopg2.connect(user = "usuário", password = "senha",host = "IP do banco de dados",port = "5432",database = "bovespa")*
 
