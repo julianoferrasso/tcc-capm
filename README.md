@@ -9,7 +9,7 @@ Para tanto foi utilizado o arquivo da série histórica da BOVESPA e utlizada a 
 
 Pela pouco eficiência em trabalhar com leitura de arquivo, para o algorimto processar os dados, foi elaborado um algoritmo auxiliar **(tcc-importa-acoes-ibov.py)** para popular um banco de dados relacional em PostgreSQL que através do arquivo da série histórica do BOVESPA o algoritmo fez a inserção dos valores necessários no banco de dados. 
 
-O algoritmo principal **(tcc-calcula-capm.py)** tem uma função chamada calcula_capm(arg1, arg2, arg3, arg4) com quatro seguintes argumentos:
+O algoritmo principal **(tcc-calcula-capm.py)** tem uma função chamada *calcula_capm(arg1, arg2, arg3, arg4)* com quatro seguintes argumentos:
   - arg1 - destinado a informar o código da ação de operação na bolsa de valores a ser analisada. ex: (PETR4, ABEV3, BBAS3)
   - arg2 - destinado a informar a data inicial do período a ser analisado. A data deve estar no formato AAAA-MM-DD. ex: (2019-01-01)
   - arg3 - destinado a informar a data final do período a ser analisado. A data deve estar no formato AAAA-MM-DD. ex: (2019-01-31)
