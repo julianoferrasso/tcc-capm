@@ -140,7 +140,7 @@ def calcula_capm(arg_acao,arg_dt_incial,arg_dt_final,arg_grafico):
         Beta = COV/VAR
         Beta = float(Beta)
         
-        print ("\nBeta",cod_acao,'Periodo',dia_inicio,'a',dia_fim,'=', Beta)
+        print ("\nBeta",cod_acao,'Periodo',dia_inicio,'a',dia_fim,'=', '{:05.4f}'.format(Beta))
         
         #obtem retorno ibovespa no periodo para CAPM
         tam_vet = vet_ibov.__len__()
@@ -161,15 +161,15 @@ def calcula_capm(arg_acao,arg_dt_incial,arg_dt_final,arg_grafico):
         #calculo do CAPM
         Re = Rf+(Beta*(Rm-Rf))
     
-        print ("Retorno Esperado (CAPM) de",cod_acao,"=", Re*100)   
+        print ("Retorno Esperado (CAPM) de",cod_acao,"=", '{:05.2f}'.format(Re*100),'%')   
          
         print ('\nRetorno efetivo (%) do IBOV no periodo =','{:05.2f}'.format(retorno_ibov_per*100),'%')
-        print ('Retorno efetivo (%) de,',cod_acao,' no periodo =','{:05.2f}'.format(retorno_acao_per*100),'%','\n')
+        print ('Retorno efetivo (%) de',cod_acao,'no periodo =','{:05.2f}'.format(retorno_acao_per*100),'%','\n')
         
         #gera grafico retorno da acao x ibov
         if op_grafico == 1:
             plt.plot((vet_dia_ret),vet_ret_ibov)
-            plt.plot((vet_dia_ret),vet_ret_acao)
+            plt.plot((vet_dia_ret),vet_ret_acao, ':')
             plt.title('Retrono Diario '+cod_acao+' x IBOV peridodo'+dia_inicio+' a '+dia_fim)
             plt.xlabel ('Periodo')
             plt.ylabel ('Retorno (%)')
@@ -180,17 +180,21 @@ def calcula_capm(arg_acao,arg_dt_incial,arg_dt_final,arg_grafico):
 
         #Geracao do grafico do Beta
         if op_grafico == 2:
-            x = np.array(vet_ret_acao)
-            y = np.array(vet_ret_ibov)
+            x = np.array(vet_ret_ibov)
+            y = np.array(vet_ret_acao)
             x = (np.float_(x))
             y = (np.float_(y))        
         
             plt.plot(x,y, 'o')
         
+            #funcao que aproxima os melhores coefiencientes (m, b) para a reta do Beta com os pontos de dispercao 
+            #obtidos atraves dos vetores retorno da acao sobre o retorno do ibov
             m, b = np.polyfit(x, y, 1)
            
             plt.plot(x, m*x + b)
             plt.title('Beta '+cod_acao+' periodo '+dia_inicio+' a '+dia_fim)     
+            plt.xlabel ('Ibovespa')
+            plt.ylabel (cod_acao)
             plt.grid()
          
     except (Exception, psycopg2.Error) as error :
@@ -210,7 +214,7 @@ start = time.time()
     #2 periodo_inicial, 
     #3 periodo_final, 
     #4 tipo de garfico (1 - Acao X Ibov, 2 - Beta acao)
-calcula_capm('BBDC3','2019-01-01','2019-12-31',2)
+calcula_capm('BBAS3','2019-01-01','2019-12-31',1)
 
 end = time.time()
 
